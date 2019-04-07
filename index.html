@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>DartRide</title>
+
+
+<script src="./index_files/jquery.min.js"></script>
+<script src="./index_files/jquery-ui.min.js"></script>
+<script src="./index_files/form8.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<script> 
+$(document).ready(function(){
+    $("#submit").click(function(){
+      
+      var arr = { Id1: $("#Id1").val(), Id2: $("#Id2").val(), Id3: $("#Id3").val(), Phone: $("#PNumber").val(), Pickup: $("#pickup option:selected").val(), Dropoff: $("#dropoff option:selected").val()};
+      var ids = [arr.Id1, arr.Id2, arr.Id3];
+      idsString = ids.filter(Boolean).join();
+      var arr2 = { student_ids: idsString, pickup_location: $("#pickup option:selected").val(), dropoff_location: $("#dropoff option:selected").val(), driver_notes: "", phone_number: $("#PNumber").val()};
+
+
+      if (arr.Id1 =="" || arr.Phone =="" || arr.Pickup =="" || arr.Dropoff ==""){
+        alert("Another field needs to be filled!");
+        return false; 
+      }
+      if (arr.Pickup == arr.Dropoff){
+        alert("Your locations are the same! You can't go to the same location!");
+        return false; 
+      }
+      if (arr.Id1.length != 7 || !isNaN(arr.Id1.charAt(0))) {
+        alert("Your ID is not inputted incorrectly!");
+        return false; 
+      }
+      if (arr.Id2.length > 0 && (arr.Id2.length != 7 || !isNaN(arr.Id2.charAt(0)))) {
+        alert("Your ID is not inputted incorrectly!");
+        return false; 
+      }
+      if (arr.Id3.length > 0 && (arr.Id3.length != 7 || !isNaN(arr.Id3.charAt(0)))) {
+        alert("Your ID is not inputted incorrectly!");
+        return false; 
+      }
+      if (arr.Phone.replace('-','(',')').length != 10){
+        alert("Your ID is not inputted incorrectly!");
+        return false; 
+      }
+      
+      var urlString = $.param(arr2);
+
+      var data = JSON.stringify(arr2);
+
+      var url = "https://uyjhps4ql8.execute-api.us-east-1.amazonaws.com/beta/add-request/?" + urlString;
+      url = url.replace(/%2C/g, ",");
+
+      $.post(url, data, function(result,status){
+      alert("Data: " + result + "\nStatus: " + status);
+    });
+
+      console.log(data);
+    });
+
+  });
+  
+
+
+</script>
+</head>
+<body>
+<div style="display:none;">
+<input type="hidden" name="locid" value="ZSALoB/viwqkkotns">
+<input type="hidden" name="EParam" value="AT1kKIiyxDw/IWfDCChVZaeLTfEDMMCuUSAE7pKjsPfd5IL1hqdm2LAzPG09ahcq">
+<input type="hidden" name="ElapsedTime" id="ElapsedTime" value="0">
+<input type="hidden" name="Referrer" id="Referrer" value="">
+<input type="text" name="subject_line" id="subject_line" autocomplete="off"><label for="subject_line">subject_line</label>
+</div>
+
+<!-- BEGIN_ITEMS -->
+<div class="table">
+<div class="clear"></div>
+
+<div id="q12" class="form-gru">
+<a class="form-control" name="ItemAnchor0"></a>
+<label class="question top_question" for="RESULT_TextField-0">Net ID&nbsp;<b class="icon_required" style="color:#FF0000">*</b></label>
+<input type="text" name="RESULT_TextField-0" class="text_field" id="Id1" size="22" value="">
+</div>
+<div id="q13" class="form-gru">
+<a class="form-control" name="ItemAnchor1"></a>
+<label class="question top_question" for="RESULT_TextField-1">(Optional) Net ID&nbsp;</label>
+<input type="text" name="RESULT_TextField-1" class="text_field" id="Id2" size="22" value="">
+</div>
+<div id="q21" class="form-gru">
+<a class="form-control" name="ItemAnchor2"></a>
+<label class="question top_question" for="RESULT_TextField-2">(Optional) NetID&nbsp;</label>
+<input type="text" name="RESULT_TextField-2" class="text_field" id="Id3" size="25" maxlength="255" value="">
+</div>
+
+<div class="clear"></div>
+<div id="q19" class="form-gru">
+<a class="form-control" name="ItemAnchor5"></a>
+<label class="question top_question" for="RESULT_TextField-5">Phone Number&nbsp;<b class="icon_required" style="color:#FF0000">*</b></label>
+<input type="text" name="RESULT_TextField-5" class="text_field" id="PNumber" size="34" maxlength="255" value="">
+</div>
+
+<div class="clear"></div>
+    
+
+    <div class="dropdown">
+    <select class = "custom-select custom-select-m mb-3" id = "pickup">  
+
+      <option selected value = "">Pickup Location</option>
+      <option value = "Judge Hall">Judge Hall</option>
+      <option value = "French Hall">French Hall</option>
+      <option value = "Fahey/Mclane">Fahey/Mclane</option>
+      <option value = "Rusell Sage">Rusell Sage</option>
+      <option value = "Baker Library">Baker Library</option>
+      <option value = "Zimmerman Hall">Zimmerman Hall</option>
+      <option value = "Alumni Gymnasium">Alumni Gymnasium</option>
+      <option value = "New Hamp">New Hamp</option>
+      <option value = "Phil Hanlon’s Lawn">Phil Hanlon’s Lawn</option>
+
+    </select>
+  &nbsp;<b class="icon_required" style="color:#FF0000">*</b>
+  </div>
+<div class="clear">
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+</div>
+
+  <div class="dropdown">
+    <select class = "custom-select custom-select-m mb-3" id = "dropoff">
+      <option selected value = "">Dropoff Location</option>
+      <option value = "Judge Hall">Judge Hall</option>
+      <option value = "French Hall">French Hall</option>
+      <option value = "Fahey/Mclane">Fahey/Mclane</option>
+      <option value = "Rusell Sage">Rusell Sage</option>
+      <option value = "Baker Library">Baker Library</option>
+      <option value = "Zimmerman Hall">Zimmerman Hall</option>
+      <option value = "Alumni Gymnasium">Alumni Gymnasium</option>
+      <option value = "New Hamp">New Hamp</option>
+      <option value = "Phil Hanlon’s Lawn">Phil Hanlon’s Lawn</option>
+
+
+    </select>
+    &nbsp;<b class="icon_required" style="color:#FF0000">*</b>
+  </div>
+
+
+
+</div>
+
+</div>
+
+
+<!-- END_ITEMS -->
+<input type="hidden" name="EParam" value="FzpUCZwnDno=">
+<div class="outside_container">
+<!-- <div class="buttons_reverse"><input type="submit" name="Submit" value="Submit" class="submit_button" id="FSsubmit"></div> -->
+
+<button id="submit" class="btn btn-primary">Get a ride</button>
+
+</div>
+</form>
+
+
+</body></html>
